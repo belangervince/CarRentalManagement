@@ -1,4 +1,5 @@
-﻿using CarRentalManagement.Server.Models;
+﻿using CarRentalManagement.Server.Configurations.Entities;
+using CarRentalManagement.Server.Models;
 using CarRentalManagement.Shared.Domain;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
@@ -25,5 +26,12 @@ namespace CarRentalManagement.Server.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Colour> Colours { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.ApplyConfiguration(new ColourSeedConfiguration());
+        }
     }
 }

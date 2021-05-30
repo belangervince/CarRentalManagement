@@ -60,7 +60,7 @@
 </EditForm>
 
 @code {
-    Booking booking = new Booking();
+    Booking booking = new Booking { DateOut = DateTime.Now.Date };
     private IList<Vehicle> Vehicles;
     private IList<Customer> Customers;
 

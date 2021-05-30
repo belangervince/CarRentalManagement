@@ -1,0 +1,114 @@
+﻿@page "/vehicles/create"
+
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<h3 class="card-title">Create New Vehicle</h3>
+
+<EditForm Model="@vehicle" OnValidSubmit="CreateVehicle">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Make:</label>
+        <div>
+            <select @bind="vehicle.MakeId" class="form-control">
+                <option value="">-- Select Make --</option>
+                @if (Makes != null)
+                {
+                    foreach (var item in Makes)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                }
+            </select>
+            <ValidationMessage For="@(() => vehicle.MakeId)"></ValidationMessage>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Model:</label>
+        <div>
+            <select @bind="vehicle.ModelId" class="form-control">
+                <option value="">-- Select Model --</option>
+                @if (Makes != null)
+                {
+                    foreach (var item in Models)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                }
+            </select>
+            <ValidationMessage For="@(() => vehicle.ModelId)"></ValidationMessage>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Colour:</label>
+        <div>
+            <select @bind="vehicle.ColourId" class="form-control">
+                <option value="">-- Select Colour --</option>
+                @if (Colours != null)
+                {
+                    foreach (var item in Colours)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                }
+            </select>
+            <ValidationMessage For="@(() => vehicle.ColourId)"></ValidationMessage>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Year:</label>
+        <div>
+            <InputNumber @bind-Value="@vehicle.Year" class="form-control"></InputNumber>
+            <ValidationMessage For="@(() => vehicle.Year)"></ValidationMessage>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>License Plate Number:</label>
+        <div>
+            <InputText @bind-Value="@vehicle.LicensePlateNumber" class="form-control"></InputText>
+            <ValidationMessage For="@(() => vehicle.LicensePlateNumber)"></ValidationMessage>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Vehicle Identification Number:</label>
+        <div>
+            <InputText @bind-Value="@vehicle.Vin" class="form-control"></InputText>
+            <ValidationMessage For="@(() => vehicle.Vin)"></ValidationMessage>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Daily Rate:</label>
+        <div>
+            <InputNumber @bind-Value="@vehicle.RentalRate" class="form-control"></InputNumber>
+            <ValidationMessage For="@(() => vehicle.RentalRate)"></ValidationMessage>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success btn-block">
+        Create vehicle
+    </button>
+</EditForm>
+
+@code {
+    Vehicle vehicle = new Vehicle();
+    private IList<Make> Makes;
+    private IList<Model> Models;
+    private IList<Colour> Colours;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Makes = await _client.GetFromJsonAsync<List<Make>>($"{Endpoints.MakesEndpoint}");
+        Models = await _client.GetFromJsonAsync<List<Model>>($"{Endpoints.ModelsEndpoint}");
+        Colours = await _client.GetFromJsonAsync<List<Colour>>($"{Endpoints.ColoursEndpoint}");
+    }
+
+    private async Task CreateVehicle()
+    {
+        await _client.PostAsJsonAsync($"{Endpoints.VehiclesEndpoint}", vehicle);
+        _navManager.NavigateTo("/vehicles/");
+    }
+}

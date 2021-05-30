@@ -1,0 +1,34 @@
+﻿@page "/customers/create"
+
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<h3 class="card-title">Create New Colour</h3>
+
+<EditForm Model="@colour" OnValidSubmit="CreateMake">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Name:</label>
+        <div>
+            <InputText @bind-Value="@colour.Name" class="form-control"></InputText>
+            <ValidationMessage For="@(() => colour.Name)"></ValidationMessage>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success btn-block">
+        Create colour
+    </button>
+</EditForm>
+
+@code {
+    Colour colour = new Colour();
+
+    private async Task CreateMake()
+    {
+        await _client.PostAsJsonAsync($"{Endpoints.ColoursEndpoint}", colour);
+        _navManager.NavigateTo("/colours/");
+    }
+}

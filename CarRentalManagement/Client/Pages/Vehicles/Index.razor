@@ -17,23 +17,29 @@ else
     <table class="table table-responsive">
         <thead>
             <tr>
-                <th>Name</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Daily Rate</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var customer in Vehicles)
+            @foreach (var vehicles in Vehicles)
             {
                 <tr>
-                    <td>@customer.EmailAddress</td>
+                    <td>@vehicles.Make.Name</td>
+                    <td>@vehicles.Model.Name</td>
+                    <td>@vehicles.Year</td>
+                    <td>@vehicles.RentalRate</td>
                     <td>
-                        <a href="/vehicles/view/@customer.Id" class="btn btn-primary">
+                        <a href="/vehicles/view/@vehicles.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="/vehicles/edit/@customer.Id" class="btn btn-warning">
+                        <a href="/vehicles/edit/@vehicles.Id" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
-                        <button class="btn btn-danger" @onclick="@(() => Delete(customer.Id))">
+                        <button class="btn btn-danger" @onclick="@(() => Delete(vehicles.Id))">
                             <span class="oi oi-delete"></span>
                         </button>
                     </td>
@@ -44,17 +50,17 @@ else
 }
 
 @code {
-    private List<Customer> Vehicles;
+    private List<Vehicle> Vehicles;
 
     protected async override Task OnInitializedAsync()
     {
-        Vehicles = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.VehiclesEndpoint}");
+        Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
     }
 
     async Task Delete(int id)
     {
         var customer = Vehicles.First(q => q.Id == id);
-        var confirm = await _js.InvokeAsync<bool>("confirm", $"Do you want to delete {customer.EmailAddress}?");
+        var confirm = await _js.InvokeAsync<bool>("confirm", $"Do you want to delete this?");
         if (confirm)
         {
             await _client.DeleteAsync($"{Endpoints.VehiclesEndpoint}{id}");

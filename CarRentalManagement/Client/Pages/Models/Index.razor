@@ -22,18 +22,18 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var customer in Models)
+            @foreach (var model in Models)
             {
                 <tr>
-                    <td>@customer.EmailAddress</td>
+                    <td>@model.Name</td>
                     <td>
-                        <a href="/models/view/@customer.Id" class="btn btn-primary">
+                        <a href="/models/view/@model.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="/models/edit/@customer.Id" class="btn btn-warning">
+                        <a href="/models/edit/@model.Id" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
-                        <button class="btn btn-danger" @onclick="@(() => Delete(customer.Id))">
+                        <button class="btn btn-danger" @onclick="@(() => Delete(model.Id))">
                             <span class="oi oi-delete"></span>
                         </button>
                     </td>
@@ -44,17 +44,17 @@ else
 }
 
 @code {
-    private List<Customer> Models;
+    private List<Model> Models;
 
     protected async override Task OnInitializedAsync()
     {
-        Models = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.ModelsEndpoint}");
+        Models = await _client.GetFromJsonAsync<List<Model>>($"{Endpoints.ModelsEndpoint}");
     }
 
     async Task Delete(int id)
     {
-        var customer = Models.First(q => q.Id == id);
-        var confirm = await _js.InvokeAsync<bool>("confirm", $"Do you want to delete {customer.EmailAddress}?");
+        var model = Models.First(q => q.Id == id);
+        var confirm = await _js.InvokeAsync<bool>("confirm", $"Do you want to delete {model.Name}?");
         if (confirm)
         {
             await _client.DeleteAsync($"{Endpoints.ModelsEndpoint}{id}");

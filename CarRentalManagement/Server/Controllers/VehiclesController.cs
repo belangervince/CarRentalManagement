@@ -32,7 +32,7 @@ namespace CarRentalManagement.Server.Controllers
 
         // GET: api/Vehicles/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMake(int id)
+        public async Task<IActionResult> GetVehicle(int id)
         {
             var make = await _unitOfWork.Vehicles.Get(q => q.Id == id);
 
@@ -47,7 +47,7 @@ namespace CarRentalManagement.Server.Controllers
         // PUT: api/Vehicles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMake(int id, Vehicle vehicle)
+        public async Task<IActionResult> PutVehicle(int id, Vehicle vehicle)
         {
             if (id != vehicle.Id)
             {
@@ -62,7 +62,7 @@ namespace CarRentalManagement.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!(await MakeExists(id)))
+                if (!(await VehicleExists(id)))
                 {
                     return NotFound();
                 }
@@ -78,17 +78,17 @@ namespace CarRentalManagement.Server.Controllers
         // POST: api/Vehicles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Make>> PostMake(Vehicle vehicle)
+        public async Task<ActionResult<Vehicle>> PostVehicle(Vehicle vehicle)
         {
             await _unitOfWork.Vehicles.Insert(vehicle);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetMake", new { id = vehicle.Id }, vehicle);
+            return CreatedAtAction("GetVehicle", new { id = vehicle.Id }, vehicle);
         }
 
         // DELETE: api/Vehicles/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMake(int id)
+        public async Task<IActionResult> DeleteVehicle(int id)
         {
             var make = await _unitOfWork.Vehicles.Get(q => q.Id == id);
             if (make == null)
@@ -101,7 +101,7 @@ namespace CarRentalManagement.Server.Controllers
             return NoContent();
         }
 
-        private async Task<bool> MakeExists(int id)
+        private async Task<bool> VehicleExists(int id)
         {
             var make = await _unitOfWork.Vehicles.Get(q => q.Id == id);
             return make != null;

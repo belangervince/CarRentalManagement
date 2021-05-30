@@ -32,7 +32,7 @@ namespace CarRentalManagement.Server.Controllers
 
         // GET: api/Customers/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMake(int id)
+        public async Task<IActionResult> GetCustomer(int id)
         {
             var make = await _unitOfWork.Customers.Get(q => q.Id == id);
 
@@ -47,7 +47,7 @@ namespace CarRentalManagement.Server.Controllers
         // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMake(int id, Customer customer)
+        public async Task<IActionResult> PutCustomer(int id, Customer customer)
         {
             if (id != customer.Id)
             {
@@ -62,7 +62,7 @@ namespace CarRentalManagement.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!(await MakeExists(id)))
+                if (!(await CustomerExists(id)))
                 {
                     return NotFound();
                 }
@@ -78,17 +78,17 @@ namespace CarRentalManagement.Server.Controllers
         // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Make>> PostMake(Customer customer)
+        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
             await _unitOfWork.Customers.Insert(customer);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetMake", new { id = customer.Id }, customer);
+            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
         }
 
         // DELETE: api/Customers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMake(int id)
+        public async Task<IActionResult> DeleteCustomer(int id)
         {
             var make = await _unitOfWork.Customers.Get(q => q.Id == id);
             if (make == null)
@@ -101,7 +101,7 @@ namespace CarRentalManagement.Server.Controllers
             return NoContent();
         }
 
-        private async Task<bool> MakeExists(int id)
+        private async Task<bool> CustomerExists(int id)
         {
             var make = await _unitOfWork.Customers.Get(q => q.Id == id);
             return make != null;

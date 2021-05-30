@@ -32,7 +32,7 @@ namespace CarRentalManagement.Server.Controllers
 
         // GET: api/Models/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMake(int id)
+        public async Task<IActionResult> GetModel(int id)
         {
             var make = await _unitOfWork.Models.Get(q => q.Id == id);
 
@@ -47,7 +47,7 @@ namespace CarRentalManagement.Server.Controllers
         // PUT: api/Models/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMake(int id, Model model)
+        public async Task<IActionResult> PutModel(int id, Model model)
         {
             if (id != model.Id)
             {
@@ -62,7 +62,7 @@ namespace CarRentalManagement.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!(await MakeExists(id)))
+                if (!(await ModelExists(id)))
                 {
                     return NotFound();
                 }
@@ -78,17 +78,17 @@ namespace CarRentalManagement.Server.Controllers
         // POST: api/Models
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Make>> PostMake(Model model)
+        public async Task<ActionResult<Model>> PostModel(Model model)
         {
             await _unitOfWork.Models.Insert(model);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetMake", new { id = model.Id }, model);
+            return CreatedAtAction("GetModel", new { id = model.Id }, model);
         }
 
         // DELETE: api/Models/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMake(int id)
+        public async Task<IActionResult> DeleteModel(int id)
         {
             var make = await _unitOfWork.Models.Get(q => q.Id == id);
             if (make == null)
@@ -101,7 +101,7 @@ namespace CarRentalManagement.Server.Controllers
             return NoContent();
         }
 
-        private async Task<bool> MakeExists(int id)
+        private async Task<bool> ModelExists(int id)
         {
             var make = await _unitOfWork.Models.Get(q => q.Id == id);
             return make != null;

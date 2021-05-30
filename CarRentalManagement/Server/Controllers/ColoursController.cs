@@ -32,7 +32,7 @@ namespace CarRentalManagement.Server.Controllers
 
         // GET: api/Colours/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMake(int id)
+        public async Task<IActionResult> GetColour(int id)
         {
             var make = await _unitOfWork.Colours.Get(q => q.Id == id);
 
@@ -47,7 +47,7 @@ namespace CarRentalManagement.Server.Controllers
         // PUT: api/Colours/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMake(int id, Colour colour)
+        public async Task<IActionResult> PutColour(int id, Colour colour)
         {
             if (id != colour.Id)
             {
@@ -62,7 +62,7 @@ namespace CarRentalManagement.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!(await MakeExists(id)))
+                if (!(await ColourExists(id)))
                 {
                     return NotFound();
                 }
@@ -78,17 +78,17 @@ namespace CarRentalManagement.Server.Controllers
         // POST: api/Colours
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Make>> PostMake(Colour colour)
+        public async Task<ActionResult<Colour>> PostColour(Colour colour)
         {
             await _unitOfWork.Colours.Insert(colour);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetMake", new { id = colour.Id }, colour);
+            return CreatedAtAction("GetColour", new { id = colour.Id }, colour);
         }
 
         // DELETE: api/Colours/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMake(int id)
+        public async Task<IActionResult> DeleteColour(int id)
         {
             var make = await _unitOfWork.Colours.Get(q => q.Id == id);
             if (make == null)
@@ -101,7 +101,7 @@ namespace CarRentalManagement.Server.Controllers
             return NoContent();
         }
 
-        private async Task<bool> MakeExists(int id)
+        private async Task<bool> ColourExists(int id)
         {
             var make = await _unitOfWork.Colours.Get(q => q.Id == id);
             return make != null;

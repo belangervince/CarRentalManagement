@@ -38,7 +38,7 @@
                 {
                     foreach (var item in Customers)
                     {
-                        <option value="@item.Id">@item.EmailAddress</option>
+                        <option value="@item.Id">@item.TaxId | @item.EmailAddress</option>
                     }
                 }
             </select>

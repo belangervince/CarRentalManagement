@@ -17,7 +17,9 @@ else
     <table class="table table-responsive">
         <thead>
             <tr>
-                <th>Name</th>
+                <th>Tax ID</th>
+                <th>Contact Number</th>
+                <th>Email</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -25,6 +27,8 @@ else
             @foreach (var customer in Customers)
             {
                 <tr>
+                    <td>@customer.TaxId</td>
+                    <td>@customer.ContactNumber</td>
                     <td>@customer.EmailAddress</td>
                     <td>
                         <a href="/customers/view/@customer.Id" class="btn btn-primary">

@@ -60,7 +60,7 @@ namespace CarRentalManagement.Server.Controllers
 
             try
             {
-                await _unitOfWork.Save();
+                await _unitOfWork.Save(HttpContext);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -83,7 +83,7 @@ namespace CarRentalManagement.Server.Controllers
         public async Task<ActionResult<Make>> PostMake(Make make)
         {
             await _unitOfWork.Makes.Insert(make);
-            await _unitOfWork.Save();
+            await _unitOfWork.Save(HttpContext);
 
             return CreatedAtAction("GetMake", new { id = make.Id }, make);
         }
@@ -98,7 +98,7 @@ namespace CarRentalManagement.Server.Controllers
                 return NotFound();
             }
             await _unitOfWork.Makes.Delete(id);
-            await _unitOfWork.Save();
+            await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }

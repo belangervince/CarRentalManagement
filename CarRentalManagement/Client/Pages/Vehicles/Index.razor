@@ -8,13 +8,18 @@
 <hr />
 <br />
 
+<a href="/vehicles/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Vehicle
+</a>
+
 @if (Vehicles == null)
 {
     <div class="alert alert-info">Loading Vehicles...</div>
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table">
         <thead>
             <tr>
                 <th>Make</th>
@@ -25,25 +30,28 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var vehicles in Vehicles)
+            @if (Vehicles != null)
             {
-                <tr>
-                    <td>@vehicles.Make.Name</td>
-                    <td>@vehicles.Model.Name</td>
-                    <td>@vehicles.Year</td>
-                    <td>@vehicles.RentalRate</td>
-                    <td>
-                        <a href="/vehicles/view/@vehicles.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/vehicles/edit/@vehicles.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(() => Delete(vehicles.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-                </tr>
+                @foreach (Vehicle vehicle in Vehicles)
+                {
+                    <tr>
+                        <td>@vehicle.Make.Name</td>
+                        <td>@vehicle.Model.Name</td>
+                        <td>@vehicle.Year</td>
+                        <td>@vehicle.RentalRate</td>
+                        <td>
+                            <a href="/vehicles/view/@vehicle.Id" class="btn btn-primary">
+                                <span class="oi oi-book"></span>
+                            </a>
+                            <a href="/vehicles/edit/@vehicle.Id" class="btn btn-warning">
+                                <span class="oi oi-pencil"></span>
+                            </a>
+                            <button class="btn btn-danger" @onclick="@(() => Delete(vehicle.Id))">
+                                <span class="oi oi-delete"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

@@ -47,23 +47,6 @@
     </div>
 
     <div class="form-group">
-        <label>Customer:</label>
-        <div>
-            <select @bind="booking.VehicleId" class="form-control">
-                <option value="">-- Select Customer --</option>
-                @if (Vehicles != null)
-                {
-                    foreach (var item in Vehicles)
-                    {
-                        <option value="@item.Id">@item.Make.Name @item.Model.Name |</option>
-                    }
-                }
-            </select>
-            <ValidationMessage For="@(() => booking.VehicleId)"></ValidationMessage>
-        </div>
-    </div>
-
-    <div class="form-group">
         <label>Date Out:</label>
         <div>
             <InputDate @bind-Value="@booking.DateOut" class="form-control"></InputDate>

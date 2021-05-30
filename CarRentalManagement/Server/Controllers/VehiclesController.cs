@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using CarRentalManagement.Server.IRepository;
+using CarRentalManagement.Shared.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CarRentalManagement.Server.Data;
-using CarRentalManagement.Shared.Domain;
-using CarRentalManagement.Server.IRepository;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CarRentalManagement.Server.Controllers
 {
@@ -26,7 +22,7 @@ namespace CarRentalManagement.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetVehicles()
         {
-            var includes = new List<string> { "Make", "Model", "Colour" }; // todo : nameof
+            var includes = new List<string> { nameof(Vehicle.Make), nameof(Vehicle.Model), nameof(Vehicle.Colour) };
             var Vehicles = await _unitOfWork.Vehicles.GetAll(includes: includes);
             return Ok(Vehicles);
         }
@@ -35,7 +31,7 @@ namespace CarRentalManagement.Server.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVehicle(int id)
         {
-            var includes = new List<string> { "Make", "Model", "Colour", "Bookings" }; // todo : nameof
+            var includes = new List<string> { nameof(Vehicle.Make), nameof(Vehicle.Model), nameof(Vehicle.Colour), nameof(Vehicle.Bookings) };
             var vehicle = await _unitOfWork.Vehicles.Get(q => q.Id == id, includes: includes);
 
             if (vehicle == null)

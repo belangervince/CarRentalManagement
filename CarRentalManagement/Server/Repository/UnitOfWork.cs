@@ -14,6 +14,11 @@ namespace CarRentalManagement.Server.Repository
     {
         private readonly ApplicationDbContext _context;
         private IGenericRepository<Make> _makes;
+        private IGenericRepository<Model> _models;
+        private IGenericRepository<Vehicle> _vehicles;
+        private IGenericRepository<Colour> _colours;
+        private IGenericRepository<Booking> _bookings;
+        private IGenericRepository<Customer> _customers;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -21,6 +26,16 @@ namespace CarRentalManagement.Server.Repository
         }
 
         public IGenericRepository<Make> Makes => _makes ??= new GenericRepository<Make>(_context);
+
+        public IGenericRepository<Model> Models => _models ??= new GenericRepository<Model>(_context);
+
+        public IGenericRepository<Vehicle> Vehicles => _vehicles ??= new GenericRepository<Vehicle>(_context);
+
+        public IGenericRepository<Colour> Colours => _colours ??= new GenericRepository<Colour>(_context);
+
+        public IGenericRepository<Booking> Bookings => _bookings ??= new GenericRepository<Booking>(_context);
+
+        public IGenericRepository<Customer> Customers => _customers ??= new GenericRepository<Customer>(_context);
 
         public void Dispose()
         {

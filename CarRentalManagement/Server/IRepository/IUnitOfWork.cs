@@ -12,7 +12,10 @@ namespace CarRentalManagement.Server.IRepository
         Task Save(HttpContext httpContext);
 
         IGenericRepository<Make> Makes { get; }
-        //IGenericRepository<Model> Models { get; set; }
-        //IGenericRepository<Vehicle> Vehicles { get; set; }
+        IGenericRepository<Model> Models { get; set; }
+        IGenericRepository<Vehicle> Vehicles { get; set; }
+        IGenericRepository<Colour> Colours { get; set; }
+        IGenericRepository<Booking> Bookings { get; set; }
+        IGenericRepository<Customer> Customers { get; set; }
     }
 }

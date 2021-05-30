@@ -8,6 +8,8 @@ namespace CarRentalManagement.Server.IRepository
 {
     public interface IUnitOfWork : IDisposable
     {
+        Task Save();
+
         IGenericRepository<Make> Makes { get; set; }
         //IGenericRepository<Model> Models { get; set; }
         //IGenericRepository<Vehicle> Vehicles { get; set; }

@@ -1,0 +1,64 @@
+﻿@page "/vehicles/"
+@inject HttpClient _client
+@inject IJSRuntime _js
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<h3 class="card-title">Car Vehicles</h3>
+<hr />
+<br />
+
+@if (Vehicles == null)
+{
+    <div class="alert alert-info">Loading Vehicles...</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Vehicles)
+            {
+                <tr>
+                    <td>@customer.EmailAddress</td>
+                    <td>
+                        <a href="/vehicles/view/@customer.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/vehicles/edit/@customer.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(() => Delete(customer.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Customer> Vehicles;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Vehicles = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.VehiclesEndpoint}");
+    }
+
+    async Task Delete(int id)
+    {
+        var customer = Vehicles.First(q => q.Id == id);
+        var confirm = await _js.InvokeAsync<bool>("confirm", $"Do you want to delete {customer.EmailAddress}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.VehiclesEndpoint}{id}");
+            await OnInitializedAsync();
+        }
+    }
+}

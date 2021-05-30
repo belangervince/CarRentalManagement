@@ -1,0 +1,95 @@
+﻿@page "/bookings/create"
+
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<h3 class="card-title">Create New Booking</h3>
+
+<EditForm Model="@booking" OnValidSubmit="CreateMake">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Vehicle:</label>
+        <div>
+            <select @bind="booking.VehicleId" class="form-control">
+                <option value="">-- Select Vehicle --</option>
+                @if (Vehicles != null)
+                {
+                    foreach (var item in Vehicles)
+                    {
+                        <option value="@item.Id">@item.Make.Name @item.Model.Name | @item.LicensePlateNumber</option>
+                    }
+                }
+            </select>
+            <ValidationMessage For="@(() => booking.VehicleId)"></ValidationMessage>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Customer:</label>
+        <div>
+            <select @bind="booking.CustomerId" class="form-control">
+                <option value="">-- Select Customer --</option>
+                @if (Customers != null)
+                {
+                    foreach (var item in Customers)
+                    {
+                        <option value="@item.Id">@item.EmailAddress</option>
+                    }
+                }
+            </select>
+            <ValidationMessage For="@(() => booking.CustomerId)"></ValidationMessage>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Customer:</label>
+        <div>
+            <select @bind="booking.VehicleId" class="form-control">
+                <option value="">-- Select Customer --</option>
+                @if (Vehicles != null)
+                {
+                    foreach (var item in Vehicles)
+                    {
+                        <option value="@item.Id">@item.Make.Name @item.Model.Name |</option>
+                    }
+                }
+            </select>
+            <ValidationMessage For="@(() => booking.VehicleId)"></ValidationMessage>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Date Out:</label>
+        <div>
+            <InputDate @bind-Value="@booking.DateOut" class="form-control"></InputDate>
+            <ValidationMessage For="@(() => booking.DateOut)"></ValidationMessage>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create booking
+    </button>
+</EditForm>
+
+@code {
+    Booking booking = new Booking();
+    private IList<Vehicle> Vehicles;
+    private IList<Customer> Customers;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
+        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+    }
+
+    private async Task CreateMake()
+    {
+        await _client.PostAsJsonAsync($"{Endpoints.BookingsEndpoint}", booking);
+        _navManager.NavigateTo("/bookings/");
+    }
+}

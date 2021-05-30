@@ -10,7 +10,7 @@ namespace CarRentalManagement.Server.IRepository
     {
         Task Save();
 
-        IGenericRepository<Make> Makes { get; set; }
+        IGenericRepository<Make> Makes { get; }
         //IGenericRepository<Model> Models { get; set; }
         //IGenericRepository<Vehicle> Vehicles { get; set; }
     }

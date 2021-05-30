@@ -24,7 +24,6 @@
   <ItemGroup>
     <Folder Include="Pages\Models\" />
     <Folder Include="Pages\Customers\" />
-    <Folder Include="Pages\Colours\" />
     <Folder Include="Pages\Vehicles\" />
   </ItemGroup>
 

@@ -8,20 +8,7 @@
 
 <h3 class="card-title">Create New Make</h3>
 
-<EditForm Model="@make" OnValidSubmit="CreateMake">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="form-group">
-        <label>Name:</label>
-        <div>
-            <InputText @bind-Value="@make.Name" class="form-control"></InputText>
-            <ValidationMessage For="@(() => make.Name)"></ValidationMessage>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-success btn-block">
-        Create make
-    </button>
-</EditForm>
+<FormComponent ButtonText="Create make" OnValidSubmit="CreateMake" make="make"></FormComponent>
 
 @code {
     Make make = new Make();

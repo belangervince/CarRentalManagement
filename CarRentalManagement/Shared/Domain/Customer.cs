@@ -25,6 +25,7 @@ namespace CarRentalManagement.Shared.Domain
 
         [Required]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string EmailAddress { get; set; }
 
         public virtual List<Booking> Bookings { get; set; }

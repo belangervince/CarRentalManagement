@@ -19,6 +19,6 @@
     async Task EditCustomer()
     {
         await _client.PutAsJsonAsync<Customer>($"{Endpoints.CustomersEndpoint}{id}", customer);
-        _navManager.NavigateTo("/makes/");
+        _navManager.NavigateTo("/customers/");
     }
 }

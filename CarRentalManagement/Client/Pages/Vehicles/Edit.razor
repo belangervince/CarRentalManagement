@@ -1,20 +1,23 @@
-﻿@page "/vehicles/create"
+﻿@page "/makes/vehicles/{id:int}"
 
 @inject HttpClient _client
 @inject NavigationManager _navManager
 
-@using Microsoft.AspNetCore.Authorization
-@attribute [Authorize]
+<h3 class="card-title">Edit Model</h3>
 
-<h3 class="card-title">Create New Vehicle</h3>
-
-<FormComponent ButtonText="Create vehicle" OnValidSubmit="CreateVehicle" vehicle="vehicle" makes="makes" models="models" colours="colours"></FormComponent>
+<FormComponent ButtonText="Update" OnValidSubmit="EditVehicle" vehicle="vehicle" makes="makes" models="models" colours="colours"></FormComponent>
 
 @code {
+    [Parameter] public int id { get; set; }
     Vehicle vehicle = new Vehicle();
     IList<Make> makes;
     IList<Model> models;
     IList<Colour> colours;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        vehicle = await _client.GetFromJsonAsync<Vehicle>($"{Endpoints.VehiclesEndpoint}{id}");
+    }
 
     protected async override Task OnInitializedAsync()
     {
@@ -23,9 +26,9 @@
         colours = await _client.GetFromJsonAsync<List<Colour>>($"{Endpoints.ColoursEndpoint}");
     }
 
-    private async Task CreateVehicle()
+    async Task EditVehicle()
     {
-        await _client.PostAsJsonAsync($"{Endpoints.VehiclesEndpoint}", vehicle);
+        await _client.PutAsJsonAsync<Vehicle>($"{Endpoints.VehiclesEndpoint}{id}", vehicle);
         _navManager.NavigateTo("/vehicles/");
     }
 }

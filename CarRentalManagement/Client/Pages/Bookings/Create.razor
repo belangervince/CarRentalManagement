@@ -8,61 +8,12 @@
 
 <h3 class="card-title">Create New Booking</h3>
 
-<EditForm Model="@booking" OnValidSubmit="CreateMake">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label>Vehicle:</label>
-        <div>
-            <select @bind="booking.VehicleId" class="form-control">
-                <option value="">-- Select Vehicle --</option>
-                @if (Vehicles != null)
-                {
-                    foreach (var item in Vehicles)
-                    {
-                        <option value="@item.Id">@item.Make.Name @item.Model.Name | @item.LicensePlateNumber</option>
-                    }
-                }
-            </select>
-            <ValidationMessage For="@(() => booking.VehicleId)"></ValidationMessage>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Customer:</label>
-        <div>
-            <select @bind="booking.CustomerId" class="form-control">
-                <option value="">-- Select Customer --</option>
-                @if (Customers != null)
-                {
-                    foreach (var item in Customers)
-                    {
-                        <option value="@item.Id">@item.TaxId | @item.EmailAddress</option>
-                    }
-                }
-            </select>
-            <ValidationMessage For="@(() => booking.CustomerId)"></ValidationMessage>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Date Out:</label>
-        <div>
-            <InputDate @bind-Value="@booking.DateOut" class="form-control"></InputDate>
-            <ValidationMessage For="@(() => booking.DateOut)"></ValidationMessage>
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-success btn-block">
-        Create booking
-    </button>
-</EditForm>
+<FormComponent ButtonText="Update" OnValidSubmit="CreateBooking" booking="booking" vehicles="Vehicles" customers="Customers"></FormComponent>
 
 @code {
     Booking booking = new Booking { DateOut = DateTime.Now.Date };
-    private IList<Vehicle> Vehicles;
-    private IList<Customer> Customers;
+    IList<Vehicle> Vehicles;
+    IList<Customer> Customers;
 
     protected async override Task OnInitializedAsync()
     {
@@ -70,7 +21,7 @@
         Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
     }
 
-    private async Task CreateMake()
+    private async Task CreateBooking()
     {
         await _client.PostAsJsonAsync($"{Endpoints.BookingsEndpoint}", booking);
         _navManager.NavigateTo("/bookings/");

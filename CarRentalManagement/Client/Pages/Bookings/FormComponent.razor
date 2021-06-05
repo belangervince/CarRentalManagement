@@ -1,0 +1,58 @@
+﻿<EditForm Model="@booking" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Vehicle:</label>
+        <div>
+            <select @bind="booking.VehicleId" class="form-control">
+                <option value="">-- Select Vehicle --</option>
+                @if (vehicles != null)
+                {
+                    foreach (var item in vehicles)
+                    {
+                        <option value="@item.Id">@item.Make.Name @item.Model.Name | @item.LicensePlateNumber</option>
+                    }
+                }
+            </select>
+            <ValidationMessage For="@(() => booking.VehicleId)"></ValidationMessage>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Customer:</label>
+        <div>
+            <select @bind="booking.CustomerId" class="form-control">
+                <option value="">-- Select Customer --</option>
+                @if (customers != null)
+                {
+                    foreach (var item in customers)
+                    {
+                        <option value="@item.Id">@item.TaxId | @item.EmailAddress</option>
+                    }
+                }
+            </select>
+            <ValidationMessage For="@(() => booking.CustomerId)"></ValidationMessage>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Date Out:</label>
+        <div>
+            <InputDate @bind-Value="@booking.DateOut" class="form-control"></InputDate>
+            <ValidationMessage For="@(() => booking.DateOut)"></ValidationMessage>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        @ButtonText
+    </button>
+</EditForm>
+
+@code {
+    [Parameter] public Booking booking { get; set; }
+    [Parameter] public IList<Vehicle> vehicles { get; set; }
+    [Parameter] public IList<Customer> customers { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+}

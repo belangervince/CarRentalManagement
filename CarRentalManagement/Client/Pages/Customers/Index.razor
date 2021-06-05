@@ -22,7 +22,7 @@ else
     <table class="table table">
         <thead>
             <tr>
-                <th>Tax ID</th>
+                <th>Full name</th>
                 <th>Contact Number</th>
                 <th>Email</th>
                 <th>Actions</th>
@@ -32,7 +32,7 @@ else
             @foreach (var customer in Customers)
             {
                 <tr>
-                    <td>@customer.TaxId</td>
+                    <td>@customer.FirstName @customer.LastName</td>
                     <td>@customer.ContactNumber</td>
                     <td>@customer.EmailAddress</td>
                     <td>

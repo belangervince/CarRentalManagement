@@ -5,25 +5,15 @@
 
 <h3 class="card-title">Edit Model</h3>
 
-<FormComponent ButtonText="Update" OnValidSubmit="EditVehicle" vehicle="vehicle" makes="makes" models="models" colours="colours"></FormComponent>
+<FormComponent ButtonText="Update" OnValidSubmit="EditVehicle" vehicle="vehicle"></FormComponent>
 
 @code {
     [Parameter] public int id { get; set; }
     Vehicle vehicle = new Vehicle();
-    IList<Make> makes;
-    IList<Model> models;
-    IList<Colour> colours;
 
     protected async override Task OnParametersSetAsync()
     {
         vehicle = await _client.GetFromJsonAsync<Vehicle>($"{Endpoints.VehiclesEndpoint}{id}");
-    }
-
-    protected async override Task OnInitializedAsync()
-    {
-        makes = await _client.GetFromJsonAsync<List<Make>>($"{Endpoints.MakesEndpoint}");
-        models = await _client.GetFromJsonAsync<List<Model>>($"{Endpoints.ModelsEndpoint}");
-        colours = await _client.GetFromJsonAsync<List<Colour>>($"{Endpoints.ColoursEndpoint}");
     }
 
     async Task EditVehicle()

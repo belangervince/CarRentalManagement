@@ -28,6 +28,6 @@
     async Task EditBooking()
     {
         await _client.PutAsJsonAsync<Booking>($"{Endpoints.BookingsEndpoint}{id}", booking);
-        _navManager.NavigateTo("/colours/");
+        _navManager.NavigateTo("/bookings/");
     }
 }

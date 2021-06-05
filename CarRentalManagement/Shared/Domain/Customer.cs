@@ -13,8 +13,8 @@ namespace CarRentalManagement.Shared.Domain
         [StringLength(100, MinimumLength = 2)]
         public string LastName { get; set; }
 
-        [Required]
-        [StringLength(15, MinimumLength = 8)]
+        [Required(ErrorMessage = "Enter Tax ID")]
+        [StringLength(15, MinimumLength = 8, ErrorMessage = "Tax ID does not meet length requirements")]
         public string TaxId { get; set; }
 
         public string Address { get; set; }

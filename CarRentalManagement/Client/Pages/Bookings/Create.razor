@@ -8,18 +8,10 @@
 
 <h3 class="card-title">Create New Booking</h3>
 
-<FormComponent ButtonText="Update" OnValidSubmit="CreateBooking" booking="booking" vehicles="Vehicles" customers="Customers"></FormComponent>
+<FormComponent ButtonText="Update" OnValidSubmit="CreateBooking" booking="booking"></FormComponent>
 
 @code {
     Booking booking = new Booking { DateOut = DateTime.Now.Date };
-    IList<Vehicle> Vehicles;
-    IList<Customer> Customers;
-
-    protected async override Task OnInitializedAsync()
-    {
-        Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
-        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
-    }
 
     private async Task CreateBooking()
     {

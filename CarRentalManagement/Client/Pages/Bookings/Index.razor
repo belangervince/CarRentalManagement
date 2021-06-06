@@ -1,6 +1,7 @@
 ﻿@page "/bookings/"
 @inject HttpClient _client
 @inject IJSRuntime _js
+@implements IDisposable
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
 
@@ -17,7 +18,7 @@
 }
 else
 {
-    <table class="table table">
+    <table class="table" id="bookingsTable">
         <thead>
             <tr>
                 <th>Customer Tax ID</th>
@@ -56,6 +57,16 @@ else
     protected async override Task OnInitializedAsync()
     {
         Bookings = await _client.GetFromJsonAsync<List<Booking>>($"{Endpoints.BookingsEndpoint}");
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await _js.InvokeVoidAsync("AddDataTable", "#bookingsTable");
+    }
+
+    void IDisposable.Dispose()
+    {
+        _js.InvokeVoidAsync("DataTablesDispose", "#bookingsTable");
     }
 
     async Task Delete(int id)

@@ -1,5 +1,7 @@
 ﻿using CarRentalManagement.Server.IRepository;
 using CarRentalManagement.Shared.Domain;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -12,6 +14,8 @@ namespace CarRentalManagement.Server.Controllers
     public class VehiclesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public VehiclesController(IUnitOfWork unitOfWork)
         {
@@ -52,6 +56,11 @@ namespace CarRentalManagement.Server.Controllers
                 return BadRequest();
             }
 
+            if (vehicle.Image != null)
+            {
+                vehicle.ImageName = CreateFile(vehicle.Image, vehicle.ImageName);
+            }
+
             _unitOfWork.Vehicles.Update(vehicle);
 
             try
@@ -78,6 +87,11 @@ namespace CarRentalManagement.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Vehicle>> PostVehicle(Vehicle vehicle)
         {
+            if (vehicle.Image != null)
+            {
+                vehicle.ImageName = CreateFile(vehicle.Image, vehicle.ImageName);
+            }
+
             await _unitOfWork.Vehicles.Insert(vehicle);
             await _unitOfWork.Save(HttpContext);
 
@@ -103,6 +117,17 @@ namespace CarRentalManagement.Server.Controllers
         {
             var make = await _unitOfWork.Vehicles.Get(q => q.Id == id);
             return make != null;
+        }
+
+        private string CreateFile(byte[] image, string name)
+        {
+            var url = _httpContextAccessor.HttpContext.Request.Host.Value;
+            var path = $"{_webHostEnvironment.WebRootPath}\\uploads\\{name}";
+
+            var fileStream = System.IO.File.Create(path);
+            fileStream.Write(image, 0, image.Length);
+            fileStream.Close();
+            return $"http://{url}/uploads/{name}";
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
+using System.Net.Http;
 using Toolbelt.Blazor;
 
 namespace CarRentalManagement.Client.Services
@@ -29,18 +30,19 @@ namespace CarRentalManagement.Client.Services
                 {
                     case System.Net.HttpStatusCode.NotFound:
                         navigationManager.NavigateTo("/404");
-                        //message = "The requested resource was not found.";
+                        message = "The requested resource was not found.";
                         break;
                     case System.Net.HttpStatusCode.Unauthorized:
                     case System.Net.HttpStatusCode.Forbidden:
                         navigationManager.NavigateTo("/Unauthorized");
-                        //message = "The requested resource was not found.";
+                        message = "The requested resource was not found.";
                         break;
                     default:
                         navigationManager.NavigateTo("/500");
-                        //message = "Something went wrong, please contact Administrator.";
+                        message = "Something went wrong, please contact Administrator.";
                         break;
                 }
+                throw new HttpRequestException(message);
             }
         }
     }

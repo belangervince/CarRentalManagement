@@ -1,21 +1,8 @@
 ﻿@page "/colours/create"
 
-@inject HttpClient _client
-@inject NavigationManager _navManager
-
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
 
 <h3 class="card-title">Create New Colour</h3>
 
 <FormComponent ButtonText="Create colour" OnValidSubmit="CreateColour" colour="colour"></FormComponent>
-
-@code {
-    Colour colour = new Colour();
-
-    private async Task CreateColour()
-    {
-        await _client.PostAsJsonAsync($"{Endpoints.ColoursEndpoint}", colour);
-        _navManager.NavigateTo("/colours/");
-    }
-}

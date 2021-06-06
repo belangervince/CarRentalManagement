@@ -17,9 +17,11 @@ namespace CarRentalManagement.Server.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public VehiclesController(IUnitOfWork unitOfWork)
+        public VehiclesController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // GET: api/Vehicles
